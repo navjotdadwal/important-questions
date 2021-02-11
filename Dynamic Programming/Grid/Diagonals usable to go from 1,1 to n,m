@@ -1,0 +1,91 @@
+// https://codeforces.com/problemset/problem/1214/D
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>  
+#include <complex>
+#include <queue>
+#include <set>
+#include <unordered_set>
+#include <list>
+#include <chrono>
+#include <random>
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <stack>
+#include <iomanip>
+#include <fstream>
+ 
+using namespace std;
+ 
+#define all(x) (x).begin(),(x).end()
+#define int long long int
+#define pb push_back
+#define ppb pop_back
+#define pf push_front
+#define ppf pop_front
+#define F first
+#define S second
+#define inf 1e18
+#define vi vector<int>
+#define Point complex<int>
+#define X real()
+#define Y imag()
+#define pii pair<int,int>
+#define num0Beg(x) __builtin_clz(x) // no. of zero in beginning of bit representation
+#define num0end(x) __builtin_ctz(x) // no. of zero in the end
+#define numOf1(x) __builtin_popcount(x) // no. of ones in bit rep.
+#define parity(x) __builtin_parity(x) // parity of 1
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+ 
+
+int32_t main()
+{
+    FAST
+    int tt=1;
+    //cin >> tt;
+    while(tt--)
+    {         
+      int n,m;
+      cin>>n>>m;
+      char M[n+2][m+2];
+      int ways[n+2][m+2]={0},rways[n+2][m+2]={0},good[n+m]={0},ans=inf;
+      ways[1][1]=1;
+      for(int i=1;i<=n;i++)
+      {
+        for(int j=1;j<=m;j++)
+          cin>>M[i][j];  
+      }
+      for(int i=1;i<=n;i++)
+      {
+        for(int j=1;j<=m;j++)
+        {
+          if(M[i][j]=='.' && M[i-1][j]=='.')
+            ways[i][j]|=ways[i-1][j];
+          if(M[i][j]=='.' && M[i][j-1]=='.')
+            ways[i][j]|=ways[i][j-1];
+        }  
+      }
+      rways[n][m]=1;
+      for(int i=n;i>=1;i--)
+      {
+        for(int j=m;j>=1;j--)
+        {
+          if(M[i][j]=='.' && M[i+1][j]=='.')
+            rways[i][j]|=rways[i+1][j];
+          if(M[i][j]=='.' && M[i][j+1]=='.')
+            rways[i][j]|=rways[i][j+1];
+          good[i+j]+=(ways[i][j]&rways[i][j]);
+        }  
+      }
+      for(int i=3;i<=n+m-1;i++)
+        ans=min(ans,good[i]);
+      cout<<ans;
+    }
+    return 0;
+}
